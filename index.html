@@ -102,11 +102,6 @@ audio{display:none}
 .section-divider::before,.section-divider::after{content:'';flex:1;height:0.5px;background:#c9a98a;opacity:0.6}
 .divider-ornament{color:#c9a98a;font-size:12px;letter-spacing:4px;white-space:nowrap}
 
-/* ── Cards — shared ── */
-.card-block{margin:0.75rem 0.75rem 0;border-radius:12px;border:0.5px solid #e8d9cc;overflow:hidden;background:#fff}
-.card-block-head{background:#fdf6ef;border-bottom:0.5px solid #e8d9cc;padding:0.75rem 1.25rem;display:flex;align-items:center;gap:8px}
-.card-block-head-label{font-size:12px;font-weight:500;color:#2d1f18;flex:1}
-
 /* ── Story ── */
 .story-section{margin:0.75rem 0.75rem 0;background:#fff;border-radius:12px;border:0.5px solid #e8d9cc;overflow:hidden}
 .story-header{text-align:center;padding:0.75rem 1rem;border-bottom:0.5px solid #e8d9cc;background:#fdf6ef}
@@ -153,13 +148,6 @@ audio{display:none}
 .map-header a:hover,.map-header a:active{background:#c9a98a;color:#fff}
 .map-frame{width:100%;height:200px;display:block;border:none}
 
-/* ── Video ── */
-.yt-card{margin:0.75rem 0.75rem 0;border-radius:12px;border:0.5px solid #e8d9cc;overflow:hidden;background:#fff}
-.yt-header{padding:0.6rem 1rem;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #e8d9cc;background:#fdf6ef}
-.yt-header-label{font-size:12px;font-weight:500;color:#2d1f18;flex:1}
-.yt-frame-wrap{position:relative;width:100%;padding-top:56.25%}
-.yt-frame-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block}
-
 /* ── RSVP ── */
 .rsvp-wrap{margin:0.75rem 0.75rem 0;background:#fff;border-radius:12px;border:0.5px solid #e8d9cc;overflow:hidden}
 .rsvp-header{background:#fdf6ef;border-bottom:0.5px solid #e8d9cc;padding:0.85rem 1.25rem;text-align:center}
@@ -171,7 +159,7 @@ audio{display:none}
 .field input{
   width:100%;padding:12px 14px;
   border:0.5px solid #ddd0c5;border-radius:8px;
-  font-family:'Jost',sans-serif;font-size:16px;/* 16px prevents iOS zoom */
+  font-family:'Jost',sans-serif;font-size:16px;
   color:#2d1f18;background:#fdf8f5;outline:none;
   transition:border-color 0.2s;
   -webkit-appearance:none;
@@ -214,14 +202,15 @@ audio{display:none}
 
 <div class="petals-canvas" id="petals"></div>
 
-<audio id="bg-audio" loop muted autoplay>
+<!-- Removed autoplay/muted attributes for better manual control -->
+<audio id="bg-audio" loop>
   <source src="https://files.catbox.moe/hqat32.mp3" type="audio/mpeg">
 </audio>
 
 <div class="audio-bar">
   <span class="audio-song-name">&#9835; Forever Us</span>
-  <span class="audio-autoplay-note" id="autoplay-note" style="display:none">tap to play &#9654;</span>
-  <button class="audio-btn" id="audio-btn" onclick="toggleAudio()">&#9646;&#9646; Pause</button>
+  <span class="audio-autoplay-note" id="autoplay-note">tap anywhere to play &#9654;</span>
+  <button class="audio-btn" id="audio-btn" onclick="toggleAudio()">&#9654; Play</button>
 </div>
 
 <div class="page-outer">
@@ -274,7 +263,6 @@ audio{display:none}
       <span>Our Story &middot; 我们的故事</span>
     </div>
 
-    <!-- Chinese first -->
     <div class="story-col zh">
       <div class="story-lang-title" style="color:#2d1f18;">我们的开始是很长的电影，这次不是预告片，是正式场。</div>
       <p>我们的开始，是很长的电影......<br>
@@ -290,12 +278,11 @@ audio{display:none}
 千万要来，因为这一次的"千万"，真的，不能少了你！</p>
     </div>
 
-    <!-- English second -->
     <div class="story-col">
       <div class="story-lang-title" style="font-size:1.6rem;">From Just Us to Forever Us</div>
       <p>He's a '95, she's a '96—and somehow, out of all places, they met in a university so tiny you'd probably miss it on the map.<br><br>
 No dramatic plot twists, no love-at-first-sight movie moments—just two people who kept choosing each other, day after day. What started simply turned into something that gently settled in—and never left.<br><br>
-Six years in, he finally got down on one knee (about time), and she didn't even need a second to say yes.<br><br>
+Six years in, he finally got down on one knee, and she didn't even need a second to say yes.<br><br>
 By year eight, they made things official—yes, legally locked in.<br><br>
 And now, in year nine, they're ready to level up once again—this time, with all of you there to witness it.<br><br>
 From "just us" to "forever us," let the next chapter begin. 💛</p>
@@ -379,7 +366,7 @@ From "just us" to "forever us," let the next chapter begin. 💛</p>
 
   <div class="footer-ornament">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
   <div class="footer">WITH LOVE &middot; LIANG &amp; NICOLE &middot; 14.11.2026</div>
-	<div class="footer">Lyric : Nicole | Producer : Wei Liang | Singer : Mr. AI </div>
+  <div class="footer">Lyric : Nicole | Producer : Wei Liang | Singer : Mr. AI </div>
 </div>
 </div>
 
@@ -418,19 +405,51 @@ function updateCountdown(){
 }
 updateCountdown();setInterval(updateCountdown,1000);
 
-/* ── Audio ── */
-var audio=document.getElementById('bg-audio');
-var btn=document.getElementById('audio-btn');
-var note=document.getElementById('autoplay-note');
-var playing=false;
-function setPlaying(s){playing=s;btn.innerHTML=s?'&#9646;&#9646; Pause':'&#9654; Play';note.style.display=s?'none':'inline';}
-window.addEventListener('load',function(){
-  audio.muted=true;
-  audio.play().then(function(){audio.muted=false;setPlaying(true);}).catch(function(){setPlaying(false);});
-});
-function toggleAudio(){
-  if(playing){audio.pause();setPlaying(false);}
-  else{audio.muted=false;audio.play().then(function(){setPlaying(true);});}
+/* ── REVISED Audio Logic ── */
+var audio = document.getElementById('bg-audio');
+var btn = document.getElementById('audio-btn');
+var note = document.getElementById('autoplay-note');
+var playing = false;
+
+function setPlaying(s) {
+    playing = s;
+    btn.innerHTML = s ? '&#9646;&#9646; Pause' : '&#9654; Play';
+    if(note) note.style.display = s ? 'none' : 'inline';
+}
+
+// Function to trigger audio on interaction
+function startAudio() {
+    if (!playing) {
+        audio.play().then(function() {
+            setPlaying(true);
+            // Once playing, remove the global triggers
+            window.removeEventListener('click', startAudio);
+            window.removeEventListener('touchstart', startAudio);
+            window.removeEventListener('scroll', startAudio);
+        }).catch(function(e) {
+            console.log("Waiting for user interaction...");
+        });
+    }
+}
+
+// Listeners for first-time user interaction
+window.addEventListener('click', startAudio);
+window.addEventListener('touchstart', startAudio);
+window.addEventListener('scroll', startAudio, {once: true});
+
+function toggleAudio() {
+    // Manually stop automatic listeners if user clicks the button
+    window.removeEventListener('click', startAudio);
+    window.removeEventListener('touchstart', startAudio);
+    
+    if (playing) {
+        audio.pause();
+        setPlaying(false);
+    } else {
+        audio.play().then(function() {
+            setPlaying(true);
+        });
+    }
 }
 
 /* ── Petals ── */
